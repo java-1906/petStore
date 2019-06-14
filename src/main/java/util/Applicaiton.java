@@ -29,6 +29,11 @@ public class Applicaiton {
 		//createPet(2, "Frank", 2, list.get(0).getId());
 		createPuppy("Aasdf", 1, 1);
 		System.out.println(list);
+		
+		
+		int id = createAnimal("Aligator", 3);
+		createPuppy("Shaun", 100, id);
+		createPuppy("Marie", 100, id);
 	}
 	
 	
@@ -54,5 +59,17 @@ public class Applicaiton {
 		ps.execute();
 		int id = ps.getInt(4);
 		System.out.println(id);
+	}
+	
+	public static int createAnimal(String name, int safty) throws SQLException {
+		Connection con = ConnectionUtil.getConnection();
+		String sql = "call create_animal(?, ?, ?)";
+		CallableStatement ps = con.prepareCall(sql);
+		ps.setString(1, name);
+		ps.setInt(2, safty);
+		ps.registerOutParameter(3, Types.INTEGER);
+		ps.execute();
+		int id = ps.getInt(3);
+		return id;
 	}
 }

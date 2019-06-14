@@ -39,8 +39,15 @@ INSERT INTO PET (id, name, age, ANIMAL_ID) VALUES(1, 'Cain', 20, 1);
 CREATE OR REPLACE PROCEDURE create_puppy(name IN varchar2, age IN NUMBER, animal_id IN NUMBER, pet_id OUT number)
 IS
 BEGIN
-   INSERT INTO PET (id, name, age, ANIMAL_ID) VALUES (animal_seq.nexval, name, age, ANIMAL_ID);
-   pet_id := animal_seq.curval;
+   INSERT INTO PET (id, name, age, ANIMAL_ID) VALUES (animal_seq.nextval, name, age, ANIMAL_ID);
+   pet_id := animal_seq.currval;
+END;
+
+CREATE OR REPLACE PROCEDURE create_animal(name IN varchar2, safty IN NUMBER, animal_id OUT number)
+IS
+BEGIN
+   INSERT INTO ANIMAL (id, name, SAFTY) VALUES (animal_seq.nextval, name, SAFTY);
+   animal_id := animal_seq.currval;
 END;
 
 
@@ -49,3 +56,8 @@ DECLARE
 BEGIN
     create_puppy('qu', 5, 1, id);
 END;
+
+
+SELECT animal.NAME AS animal, pet.NAME AS pet FROM ANIMAL JOIN pet ON pet.ANIMAL_ID = animal.ID WHERE Animal.NAME = 'Aligator';
+
+SELECT name FROM pet UNION SELECT name FROM animal;
